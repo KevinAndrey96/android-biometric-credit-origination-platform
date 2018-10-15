@@ -1,14 +1,12 @@
-package com.yopresto.app.yoprestoapp.ui
+package com.yopresto.app.yoprestoapp.ui.main
 
 import android.app.Application
 import android.support.multidex.MultiDex
-import com.karumi.dexter.Dexter
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import com.yopresto.app.yoprestoapp.constants.WebConstant
 import com.yopresto.app.yoprestoapp.enumeration.SessionKeys
 import hundredthirtythree.sessionmanager.SessionManager
-import net.hockeyapp.android.CrashManager
 
 class HomeActivity : Application(){
     val endpoint = WebConstant.DEV_ENDPOINT_URL
@@ -32,11 +30,6 @@ class HomeActivity : Application(){
 
 
     }
-
-
-
-
-
 
     companion object {
 
