@@ -5,8 +5,8 @@ import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.widget.ListView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
@@ -21,13 +21,12 @@ import com.trantec.yo.enumeration.SessionKeys
 import com.trantec.yo.utils.JSONUtils
 import com.yopresto.app.yoprestoapp.dto.*
 import hundredthirtythree.sessionmanager.SessionManager
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.app_bar_main.*
 import libs.mjn.prettydialog.PrettyDialog
 import okhttp3.*
 import org.codehaus.jackson.map.ObjectMapper
 import org.json.JSONObject
 import java.io.IOException
+
 
 class Reports : AppCompatActivity() {
 
@@ -36,13 +35,20 @@ class Reports : AppCompatActivity() {
     var context: Context? = null
     private var client = OkHttpClient()
     private val mapper = ObjectMapper()
+    var list: ListView? = null
+    var listActive = ArrayList<ListReportActive>()
+    //var adapter: CustomAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reports)
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
         ReportActive()
-        ReportFinish()
+        //list = findViewById(R.id.list);
+
+        //adapter = new ListAdapter(this);
+        //list.setAdapter(adapter);
+        //ReportFinish()
     }
     private fun startProgress(){
         try{
@@ -194,12 +200,11 @@ class Reports : AppCompatActivity() {
                                                                     _datos.schema = AppConstants.REPORT_SCHEMA
                                                                     _datos.tabla = AppConstants.REPORT_TABLA
                                                                     _datos.campo = AppConstants.REPORT_CAMPO
-                                                                    _datos.condicion = AppConstants.REPORT_STATE_ACTIVE
+                                                                    _datos.condiciones = AppConstants.REPORT_STATE_ACTIVE
 
                                                                     //Logger.d("Clave " + datos.clave)
 
                                                                     reports.datos = _datos
-
 
                                                                     val bodyMap = RequestBody.create(HttpObjectsConstants.jsonMediaType, mapper.writeValueAsString(reports))
 
@@ -244,11 +249,24 @@ class Reports : AppCompatActivity() {
 
                                                                             if (JSONUtils.isJSONValid(responseMapString)) {
                                                                                 reportResponse =  mapper.readValue<ReportResponse>(responseMapString, ReportResponse::class.java)
-
-                                                                                if(reportResponse?.response != null && reportResponse.response!!.dataresponse != null){
+                                                                                Logger.d(reportResponse)
+                                                                                if(reportResponse.status == true && reportResponse.response!!.dataresponse != null){
+                                                                                    Logger.d(reportResponse.status)
                                                                                     val mapp = jacksonObjectMapper()
-                                                                                    val data_reports: List<ReportDataresponse> = mapp.readValue((reportResponse.response!!.dataresponse).toString())
-                                                                                    //Lista de datos
+                                                                                    val result_report = reportResponse.response!!.dataresponse!!.toLowerCase()
+                                                                                    val data_reports: List<ReportDataresponse> = mapp.readValue((result_report))
+                                                                                    Logger.d("bubv"+data_reports)
+
+                                                                                    for (item in data_reports) {
+                                                                                        Logger.d("busdvsdv:"+item.nombre)
+                                                                                        val add = ListReportActive()
+                                                                                        add.nombre = item.nombre
+                                                                                        add.fecha = item.fecha
+                                                                                        add.valor = item.valor.toString()
+
+                                                                                        listActive.add(add)
+
+                                                                                    }
                                                                                 }
                                                                             }
                                                                         }
@@ -328,7 +346,6 @@ class Reports : AppCompatActivity() {
 
         }catch (ex: Exception){
             ex.printStackTrace()
-////// FIN CONSULTA
             mHandler.post{
                 run{
                     stopProgess()
@@ -341,7 +358,7 @@ class Reports : AppCompatActivity() {
         }
     }
 
-    private fun ReportFinish() {
+    /*private fun ReportFinish() {
         try{
             val formBody = FormBody.Builder()
                     .add("username", AppConstants.TOKEN_USERNAME)
@@ -468,7 +485,7 @@ class Reports : AppCompatActivity() {
                                                                     _datos.schema = AppConstants.REPORT_SCHEMA
                                                                     _datos.tabla = AppConstants.REPORT_TABLA
                                                                     _datos.campo = AppConstants.REPORT_CAMPO
-                                                                    _datos.condicion = AppConstants.REPORT_STATE_FINISH
+                                                                    _datos.condiciones = AppConstants.REPORT_STATE_FINISH
 
                                                                     //Logger.d("Clave " + datos.clave)
 
@@ -613,5 +630,5 @@ class Reports : AppCompatActivity() {
                 }
             }
         }
-    }
+    }*/
 }
