@@ -7,6 +7,7 @@ class AppConstants {
         var TOKEN_USERNAME = "yopresto"
         var TOKEN_PASSWORD = "SECURE_TOKEN_PASSWORD"
         var DNI_OBJECT_NAME = "DNI"
+        var IDP_OBJECT_NAME = "IDP"
         var DNI_CAPTURE_OBJECT_MESSAGE = "MESSAGE"
         var MAP_SCHEMA = "admin"
         var MAP_TABLA = "informacionmapa"
