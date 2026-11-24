@@ -1,10 +1,46 @@
+# Built application files
+*.apk
+*.ap_
+*.aab
+*.dex
+
+# Files for the ART/Dalvik VM
+*.class
+
+# Java bytecode
+*.class
+
+# Log files
+*.log
+
+# Android Studio / IntelliJ IDEA
+.idea/
 *.iml
-.gradle
-/local.properties
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-.DS_Store
-/build
-/captures
+.gradle/
+build/
+*/build/
+captures/
 .externalNativeBuild
+.cxx/
+
+# Signing files
+*.jks
+*.keystore
+*.keyInfo
+signing.properties
+
+# Google Services & secrets
+google-services.json
+!google-services.json.example
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# OS-specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
